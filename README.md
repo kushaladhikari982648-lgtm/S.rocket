@@ -17,7 +17,7 @@ same scene runs through WebGL with proper lighting and lane markings.</sub>
 ## 📲 Install the APK (Android)
 
 1. On your phone open:
-   **[S.Rocket-Bus-Sim.apk](https://raw.githubusercontent.com/kushaladhikari982648-lgtm/S.rocket/arena/75781f06-s-rocket/dist/S.Rocket-Bus-Sim.apk)**
+   **[S.Rocket-Bus-Sim.apk](https://raw.githubusercontent.com/kushaladhikari982648-lgtm/S.rocket/0df0319b794dc04661c882037adf4a7775b693f3/dist/S.Rocket-Bus-Sim.apk)**
    (or grab it from the repo's `dist/` folder / the latest *Build Android APK* run).
 2. Chrome will ask **"Download anyway?"** → Download.
 3. Tap the downloaded file → Android asks to allow installs from this source → **Allow**

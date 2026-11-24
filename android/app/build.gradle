@@ -1,0 +1,54 @@
+// S.ROCKET — Nepali Bus Simulator, Android WebView shell.
+// No third-party dependencies: plain Activity + WebView, so the APK stays ~1 MB.
+plugins {
+    id 'com.android.application'
+}
+
+// The game itself lives at the repo root (index.html + built game.js).
+// Copy it into the APK assets automatically before every build.
+def repoRoot = rootProject.projectDir.parentFile
+tasks.register('syncWebAssets', Copy) {
+    from(repoRoot) {
+        include 'index.html'
+        include 'game.js'
+    }
+    into "${projectDir}/src/main/assets"
+}
+
+android {
+    namespace 'np.srocket.bus'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'np.srocket.bus'
+        minSdk 23
+        targetSdk 34
+        versionCode 20
+        versionName '2.0.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/*.version', 'META-INF/LICENSE*']
+        }
+    }
+}
+
+tasks.named('preBuild').configure { dependsOn 'syncWebAssets' }

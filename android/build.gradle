@@ -1,0 +1,4 @@
+// Root build file — single module, no external libraries (keeps the APK tiny).
+plugins {
+    id 'com.android.application' version '8.5.2' apply false
+}

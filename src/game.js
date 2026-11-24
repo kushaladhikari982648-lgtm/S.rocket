@@ -9,6 +9,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 /* ------------------------------- utils ---------------------------------- */
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const lerp = (a, b, t) => a + (b - a) * t;
+const UP = { x: 0, y: 1, z: 0 };
 const nowMs = () => ((typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now());
 const rand = (a, b) => a + Math.random() * (b - a);
 const randInt = (a, b) => Math.floor(rand(a, b + 1));
@@ -1524,7 +1525,7 @@ class Game {
     const m = this._tm, q = this._tq, p = this._tp, sc = this._ts;
     for (const c of this.traffic) {
       this.track.pointAt(c.s, c.x, p);
-      q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), this.track.headingAt(c.s));
+      q.setFromAxisAngle(UP, this.track.headingAt(c.s));
       m.compose(p, q, sc);
       c.mesh.setMatrixAt(c.idx, m);
     }
@@ -1532,7 +1533,7 @@ class Game {
     // cows
     this.cows.forEach((c, i) => {
       this.track.pointAt(c.s, c.x, p);
-      q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), c.wob + (c.moved ? 0.5 : 0));
+      q.setFromAxisAngle(UP, c.wob + (c.moved ? 0.5 : 0));
       m.compose(p, q, sc);
       this.cowMesh.setMatrixAt(i, m);
     });

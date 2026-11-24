@@ -9,6 +9,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 /* ------------------------------- utils ---------------------------------- */
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const lerp = (a, b, t) => a + (b - a) * t;
+const nowMs = () => ((typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now());
 const rand = (a, b) => a + Math.random() * (b - a);
 const randInt = (a, b) => Math.floor(rand(a, b + 1));
 const choice = (a) => a[Math.floor(Math.random() * a.length)];
@@ -1096,7 +1097,10 @@ class Game {
     bind('tBrake', 's');
     $('tHorn').addEventListener('click', () => { if (this.state === 'playing') this.doHorn(); });
     $('tDoor').addEventListener('click', () => { if (this.state === 'playing') this.toggleDoor(); });
-    if ('ontouchstart' in window) $('touch').classList.add('on');
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      $('touch').classList.add('on');
+      document.body.classList.add('is-touch');
+    }
     window.addEventListener('blur', () => { if (this.state === 'playing') this.pause(); });
   }
 
@@ -1548,9 +1552,36 @@ class Game {
     this.updateVisuals(dt);
   }
 
+  /**
+   * Adaptive resolution: phones that can't hold ~40 fps get a smaller drawing buffer,
+   * fast phones get the full (capped) device pixel ratio back. Keeps old hardware smooth.
+   */
+  adaptResolution(now) {
+    if (!this.renderer || this.state !== 'playing') { this._lastT = now; return; }
+    const prev = this._lastT;
+    this._lastT = now;
+    if (!prev) return;
+    const ms = now - prev;
+    if (ms <= 0 || ms > 120) return; // tab switch / hiccup: ignore
+    this._avgMs = this._avgMs ? this._avgMs * 0.9 + ms * 0.1 : ms;
+    this._adaptFrames = (this._adaptFrames || 0) + 1;
+    if (this._adaptFrames < 90) return;
+    this._adaptFrames = 0;
+    const cur = this.dpr || this.maxDPR;
+    let next = cur;
+    if (this._avgMs > 25 && cur > 1) next = Math.max(1, +(cur - 0.25).toFixed(2));
+    else if (this._avgMs < 13 && cur < this.maxDPR) next = Math.min(this.maxDPR, +(cur + 0.25).toFixed(2));
+    if (Math.abs(next - cur) > 0.01) {
+      this.dpr = next;
+      this.renderer.setPixelRatio(next);
+      this.renderer.setSize(window.innerWidth, window.innerHeight, false);
+    }
+  }
+
   loop() {
     requestAnimationFrame(this.loop);
     const dt = Math.min(0.05, this.clock.getDelta());
+    this.adaptResolution(nowMs());
     if (this.state === 'playing') {
       this.bus.visible = true;
       this.update(dt);

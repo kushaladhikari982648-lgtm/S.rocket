@@ -6,7 +6,7 @@
 <title>S.ROCKET — Nepali Bus Simulator | नेपाली बस सिमुलेटर</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{width:100%;height:100%;overflow:hidden;background:#0b1e3a;font-family:'Segoe UI',system-ui,-apple-system,'Noto Sans Devanagari',sans-serif;color:#fff;user-select:none}
+  html,body{width:100%;height:100%;overflow:hidden;touch-action:none;-webkit-user-select:none;background:#0b1e3a;font-family:'Segoe UI',system-ui,-apple-system,'Noto Sans Devanagari',sans-serif;color:#fff;user-select:none}
   #wrap{position:fixed;inset:0;background:#87CEEB}
   canvas{display:block;width:100%;height:100%}
   /* ---------- HUD ---------- */
@@ -74,6 +74,9 @@
   .btn.secondary{background:#fff;color:#0d47a1;box-shadow:0 6px 0 #90caf9;border:2px solid #0d47a1}
   .controls{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;text-align:left;font-size:13px;font-weight:600;color:#37474f;margin:10px auto;max-width:480px}
   .controls kbd{background:#263238;color:#fff;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:900;box-shadow:0 2px 0 #000}
+  body.is-touch .controls{display:none}
+  body.is-touch .touchhint{display:block}
+  .touchhint{display:none;font-size:13px;font-weight:700;color:#1a237e;margin:8px 0}
   .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
   .stat{background:#e3f2fd;border-radius:12px;padding:10px}
   .stat b{font-size:22px;color:#0d47a1;display:block}
@@ -153,6 +156,7 @@
       <div class="routes" id="routeList"></div>
 
       <button class="btn" id="startBtn">▶ START ENGINE — इन्जिन सुरु गर्नुहोस्</button>
+      <div class="touchhint">📱 On-screen buttons: ◀ ▶ steer · ▲ gas · ▼ brake · 📯 horn · 🚪 door</div>
       <div class="controls">
         <div><kbd>W</kbd>/<kbd>↑</kbd> Accelerate &nbsp; <kbd>S</kbd>/<kbd>↓</kbd> Brake</div>
         <div><kbd>A</kbd><kbd>D</kbd> / <kbd>←</kbd><kbd>→</kbd> Steer</div>

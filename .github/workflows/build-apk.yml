@@ -12,6 +12,9 @@ on:
       - '.github/workflows/build-apk.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   apk:
     runs-on: ubuntu-latest
@@ -51,3 +54,17 @@ jobs:
           name: s-rocket-apk
           path: dist/S.Rocket-Bus-Sim.apk
           if-no-files-found: error
+
+      # Publish the built APK back into the repo so it can be downloaded with a plain
+      # link (raw.githubusercontent.com) without a GitHub login.
+      - name: Publish APK to dist/
+        run: |
+          git config user.name "S.Rocket CI"
+          git config user.email "ci@users.noreply.github.com"
+          git add -f dist/S.Rocket-Bus-Sim.apk
+          if git diff --cached --quiet; then
+            echo "APK unchanged"
+          else
+            git commit -m "chore(dist): publish APK build [skip ci]"
+            git push
+          fi

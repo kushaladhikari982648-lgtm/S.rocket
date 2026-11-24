@@ -5,6 +5,13 @@ installs on a phone as a normal **APK**. Same repo also runs in a desktop browse
 
 > हिमालयको बाटोमा ताता बस चलाउनुहोस् 🏔️
 
+![Route start](docs/preview-start.png)
+![Bus stop](docs/preview-stop.png)
+
+<sub>The two frames above are rendered by the project's offline verification rasteriser (a
+software z-buffer that draws the real three.js scene, since CI has no GPU). On a phone the
+same scene runs through WebGL with proper lighting and lane markings.</sub>
+
 ---
 
 ## 📲 Install the APK (Android)

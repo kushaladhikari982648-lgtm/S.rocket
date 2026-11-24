@@ -1172,10 +1172,13 @@ function drawVehicle(type,x,y,w,color){
 }
 
 function drawPlayerBus(){
-  const scale = camMode? 0.46 : 0.355;
-  const bw = W*scale*0.62, bh=bw*0.92;
+  // size off the smaller screen dimension so the bus reads well on phones in portrait too
+  const base = Math.sqrt(W*H);   // balances landscape desktop and portrait phones
+  const scale = camMode? 0.55 : 0.426;
+  const bw = base*scale*0.62, bh=bw*0.92;
+  const portrait = H>W*1.2;
   const bx = W/2 + (steerVis*8) + (shake?rand(-shake,shake)*14:0);
-  const by = H - bh*0.18 + bounce + (shake?rand(-shake,shake)*8:0);
+  const by = H - bh*0.18 - (portrait? H*0.055 : 0) + bounce + (shake?rand(-shake,shake)*8:0);
   ctx.save(); ctx.translate(bx,by);
   // shadow
   ctx.fillStyle='rgba(0,0,0,.35)'; ctx.beginPath(); ctx.ellipse(0,bh*0.06,bw*0.55,bh*0.09,0,0,7); ctx.fill();

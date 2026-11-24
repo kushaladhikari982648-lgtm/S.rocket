@@ -19,7 +19,7 @@ installs on a phone as a normal **APK**. Same repo also runs in a desktop browse
    no ads, no internet needed.
 
 Requirements: Android 6.0+ (API 23) with a GPU that supports OpenGL ES 2.0 (any phone since ~2013).
-The APK is ~1.3 MB because the game is code + generated textures — no image files.
+The APK is only **~180 KB** — the whole game is code plus textures drawn at runtime, no image/audio files.
 
 ## 🎮 How to play
 

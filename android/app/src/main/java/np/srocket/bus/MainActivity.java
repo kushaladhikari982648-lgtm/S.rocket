@@ -144,6 +144,14 @@ public class MainActivity extends Activity {
                 });
     }
 
+    /** Rotation / multi-window / density change: keep the WebView, just re-measure the canvas. */
+    @Override
+    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        web.post(() -> js("window.dispatchEvent(new Event('resize'))"));
+        goImmersive();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
